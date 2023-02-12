@@ -1,10 +1,13 @@
 
 import './App.css';
 import { motion, useTransform, useScroll, useSpring } from "framer-motion";
-import { useState } from 'react';
-import NavBar from './components/NavBar';
+import { auth } from './auth';
+import { useAuthState } from 'react-firebase-hooks/auth';
+
+
 
 function App() {
+   const [user, loading] = useAuthState(auth);
    let { scrollYProgress } = useScroll() ;
 
      const scaleX = useSpring(scrollYProgress, {
@@ -12,7 +15,10 @@ function App() {
        damping: 1000,
      });
   let y = useSpring(
-    useTransform(scrollYProgress, [0, 1], [0, 100 * 15])
+    useTransform(scrollYProgress, [0, 1], [0, 100 * 16])
+  );
+  let x = useSpring(
+    useTransform(scrollYProgress, [0, 1], [0, -100 * 16])
   );
 
   let container = {
@@ -26,12 +32,11 @@ function App() {
   };
 
   const item = {
-    hidden: { opacity: 0, x: 0 },
-    show: { opacity: 1, x:10 },
+    hidden: { opacity: 0, x: 10 },
+    show: { opacity: 1, x:0 },
   };
   return (
     <div className="App">
-      <NavBar />
       <motion.div
         style={{ scaleX: scaleX }}
         className="bg-gradient-to-r from-yellow-400 to-red-500 fixed top-0 left-0 right-0 h-[4px] origin-left -z-10"
@@ -45,15 +50,26 @@ function App() {
         <motion.div
           initial={{ opacity: 1 }}
           style={{ x: y, rotateZ: y, scale: 2 }}
-          className="bg-red-600 w-[100px] h-[100px] -left-[180px] top-[300px] flex -z-50 absolute "
-        ></motion.div>
+          className="bg-red-500 w-[160px] h-[160px] left-[80px] top-[200px] flex -z-50 absolute items-center justify-center"
+        >
+          {user?.displayName}
+        </motion.div>
+        <motion.div
+          initial={{ opacity: 1 }}
+          style={{ x: x, rotateZ: x, scale: 2 }}
+          className="bg-yellow-500 w-[160px] h-[160px] right-[80px] top-[600px] flex -z-50 absolute "
+        >
+          {user?.displayName}
+        </motion.div>
 
         <motion.div
           variants={item}
           initial={{ opacity: 1 }}
           style={{ x: y, rotateZ: y, scale: 2 }}
-          className="bg-red-600 w-[100px] h-[100px] -left-[180px] top-[900px] flex -z-50 absolute"
-        ></motion.div>
+          className="bg-red-500 w-[160px] h-[160px] left-[160px] top-[1000px] flex -z-50 absolute"
+        >
+          {user?.displayName}
+        </motion.div>
 
         <motion.div variants={item} className="flex flex-col"></motion.div>
 
