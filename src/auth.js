@@ -1,21 +1,89 @@
-// Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+import {
+  GoogleAuthProvider,
+  signInWithPopup,
+  createUserWithEmailAndPassword,
+  getAuth,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  signOut,
+  updateProfile,
+} from "firebase/auth";
 
-// Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyBfYQj8x--7nqVFgF1muK4WZKGKrvzGDWE",
-  authDomain: "deneme-1a7ab.firebaseapp.com",
-  projectId: "deneme-1a7ab",
-  storageBucket: "deneme-1a7ab.appspot.com",
-  messagingSenderId: "50056347451",
-  appId: "1:50056347451:web:ff1a955704cbd5058a811e",
+  apiKey: "AIzaSyCuIcycvkCnyUb_W7v-aUkW3H4xUy2MLJU",
+  authDomain: "bakar-48bc8.firebaseapp.com",
+  projectId: "bakar-48bc8",
+  storageBucket: "bakar-48bc8.appspot.com",
+  messagingSenderId: "349433378359",
+  appId: "1:349433378359:web:4e7b95b55db5629b48f1b2",
+  measurementId: "G-0EDJKCQHZQ",
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
-export const auth = getAuth();
-export const db = getFirestore(app);
+
+export const auth = getAuth(app);
+
+const provider = new GoogleAuthProvider();
+
+export const createUser = async (email, password, displayName) => {
+  try {
+    let user = await createUserWithEmailAndPassword(auth, email, password);
+    await updateProfile(auth.currentUser, {
+      displayName: displayName,
+    });
+    alert(`Hoş geldiniz Sn. ${displayName}`);
+    // console.log(user);
+  } catch (err) {
+    alert(err.message);
+  }
+};
+
+export const signIn = async (email, password, navigate) => {
+  try {
+    let userCredential = await signInWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+    navigate("/");
+    console.log(userCredential);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const logOut = () => {
+  signOut(auth);
+  alert("İşin rast gelsin!!!");
+};
+
+export const userObserver = (setCurrentUser) => {
+  onAuthStateChanged(auth, (currentUser) => {
+    if (currentUser) {
+      setCurrentUser(currentUser);
+      // console.log(currentUser);
+    } else {
+      setCurrentUser(false);
+    }
+  });
+};
+
+export const signInWithGoogle = () => {
+  signInWithPopup(auth, provider)
+    .then((result) => {
+      const name = result.user.displayName;
+      const email = result.user.email;
+      const profilePic = result.user.photoURL;
+
+      localStorage.setItem(
+        "items",
+        JSON.stringify({ name, email, profilePic })
+      );
+      console.log(name);
+      //   alert(`Hoş geldiniz Sn. ${name}`)
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+};

@@ -3,13 +3,15 @@ import './App.css';
 import { motion, useTransform, useScroll, useSpring } from "framer-motion";
 import { auth } from './auth';
 import { useAuthState } from 'react-firebase-hooks/auth';
+import { useSelector } from 'react-redux';
 
 
 
 function App() {
-   const [user, loading] = useAuthState(auth);
+  const user = useSelector((state)=>state.user)
+  //  const [user, loading] = useAuthState(auth);
    let { scrollYProgress } = useScroll() ;
-
+console.log(user)
      const scaleX = useSpring(scrollYProgress, {
        stiffness: 10000,
        damping: 1000,
@@ -52,23 +54,23 @@ function App() {
           style={{ x: y, rotateZ: y, scale: 2 }}
           className="bg-red-500 w-[160px] h-[160px] left-[80px] top-[200px] flex -z-50 absolute items-center justify-center"
         >
-          {user?.displayName}
+          {user && user?.displayName}
         </motion.div>
         <motion.div
           initial={{ opacity: 1 }}
           style={{ x: x, rotateZ: x, scale: 2 }}
-          className="bg-yellow-500 w-[160px] h-[160px] right-[80px] top-[600px] flex -z-50 absolute "
+          className="bg-yellow-500 w-[160px] h-[160px] right-[80px] top-[600px] flex -z-50 absolute items-center justify-center"
         >
-          {user?.displayName}
+          {user && user?.displayName}
         </motion.div>
 
         <motion.div
           variants={item}
           initial={{ opacity: 1 }}
           style={{ x: y, rotateZ: y, scale: 2 }}
-          className="bg-red-500 w-[160px] h-[160px] left-[160px] top-[1000px] flex -z-50 absolute"
+          className="bg-red-500 w-[160px] h-[160px] left-[160px] top-[1000px] flex -z-50 absolute items-center justify-center"
         >
-          {user?.displayName}
+          {user && user?.displayName}
         </motion.div>
 
         <motion.div variants={item} className="flex flex-col"></motion.div>

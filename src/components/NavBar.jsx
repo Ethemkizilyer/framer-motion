@@ -2,15 +2,19 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { Button, IconButton, MobileNav, Navbar, Typography } from "@material-tailwind/react";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "../auth";
+import auth, { logOut }  from "../auth";
+import { useDispatch, useSelector } from "react-redux";
 
 
 const NavBar = () => {
   const [active, setActive] = useState("home");
   const navigate = useNavigate();
-  const [user, loading] = useAuthState(auth);
-  console.log(user)
+const user = useSelector((state)=>state.auth.user)
+console.log(user)
+
+    const dispatch = useDispatch();
   const handleClick = (page) => {
+  
     setActive(page);
   };
     const [openNav, setOpenNav] = useState(false);
@@ -24,125 +28,6 @@ const NavBar = () => {
 
 
 const navList = (
-  //  <div className=" lg:block hidden">
-  //               <button
-  //              className={`mx-2 py-2 mt-[22px]   px-4 h-12 font-medium relative ${
-  //                    active == "home"
-  //                     ? "border-t-[1px] w-[80px] rounded-t-lg border-b-white "
-  //                     : ""
-  //                  }`}
-  //                 onClick={() => {
-  //                   navigate("/");
-  //                   return handleClick("home");
-  //                 }}
-  //               >
-  //                 <span
-  //                   className={`absolute -left-[5px] h-[1px] w-[89px] -right-1 bottom-[2.5px] ${
-  //                     active == "home" && " bg-white h-[1px]  "
-  //                  }`}
-  //                ></span>
-  //                <span
-  //                  className={`absolute -left-[19.3px] bottom-[2.5px] ${
-  //                     active == "home" &&
-  //                    "border-r-[1px] border-r-gray-100 border-b-[1px] rounded-br-lg  rounded- w-[20px] h-[40px]"
-  //                  }`}
-  //                ></span>
-  //                <span
-  //               className={`absolute -right-[23px] bottom-[2.5px] ${
-  //                   active == "home" &&
-  //                    "border-l-[1px] border-l-gray-100 border-r-white rounded-b-lg w-6 h-[40px]"
-  //                   }`}
-  //                 ></span>
-  //                 Home
-  //               </button>
-
-  //               <button
-  //                 className={`mx-2 py-2 mt-[22px]  px-4 h-12 text-gray-500 font-medium relative ${
-  //                   active == "what"
-  //                     ? "border-t-[1px] w-[130px] rounded-t-lg border-b-white "
-  //                     : ""
-  //                 }`}
-  //                 onClick={() => handleClick("what")}
-  //               >
-  //                 <span
-  //                   className={`absolute -left-[7px] h-[1px] w-[141px] -right-1 bottom-[2.5px] ${
-  //                     active == "what" && " bg-white h-[1px]  "
-  //                   }`}
-  //                 ></span>
-  //                 <span
-  //                   className={`absolute -left-[19.3px] bottom-[2.5px] ${
-  //                     active == "what" &&
-  //                     "border-r-[1px] border-r-gray-100 border-b-[1px] rounded-br-lg  rounded- w-[20px] h-[39px]"
-  //                   }`}
-  //                 ></span>
-  //                 <span
-  //                   className={`absolute -right-[23.5px] bottom-[2.5px] ${
-  //                     active == "what" &&
-  //                     "border-l-[1px] border-l-gray-100 border-r-white-100 rounded-b-lg w-6 h-[39px]"
-  //                   }`}
-  //                 ></span>
-  //                 What We Do
-  //               </button>
-  //               <button
-  //                 className={`mx-2 py-2 mt-[22px]  px-4 h-12 text-gray-500 font-medium relative ${
-  //                   active == "GAMI"
-  //                      ? "border-t-[1px] w-[150px] rounded-t-lg border-b-white "
-  //                     : ""
-  //                 }`}
-  //                 onClick={() => handleClick("GAMI")}
-  //               >
-  //                 <span
-  //                   className={`absolute -left-[12px] h-[1px] w-[167px] -right-1 bottom-[2.5px] ${
-  //                     active == "GAMI" && " bg-white h-[1px]  "
-  //                   }`}
-  //                 ></span>
-  //                 <span
-  //                   className={`absolute -left-[19.3px] bottom-[2.5px] ${
-  //                     active == "GAMI" &&
-  //                     "border-r-[1px] border-r-gray-100 border-b-[1px] rounded-br-lg  rounded- w-[20px] h-[39px]"
-  //                   }`}
-  //                 ></span>
-  //                 <span
-  //                   className={`absolute -right-[23px] bottom-[2.5px] ${
-  //                     active == "GAMI" &&
-  //                     "border-l-[1px] border-l-gray-100 border-r-white rounded-bl-lg w-6 h-[39px]"
-  //                   }`}
-  //                 ></span>
-  //                 GAMI Statistics
-  //               </button>
-  //               <button
-  //                 className={`mx-2 py-2 mt-[22px]  px-4 h-12 text-gray-500 font-medium relative ${
-  //                   active == "contact"
-  //                      ? "border-t-[1px] w-[120px] rounded-t-lg border-b-white "
-  //                     : ""
-  //                 }`}
-  //                 onClick={() => {
-  //                 //   navigate("/contact");
-  //                   return handleClick("contact");
-  //                 }}
-  //               >
-  //                 <span
-  //                   className={`absolute -left-[6px] h-[1px] w-[130px] -right-1 bottom-[2.5px] ${
-  //                     active == "contact" && " bg-white h-[1px]  "
-  //                   }`}
-  //                 ></span>
-  //                 <span
-  //                   className={`absolute -left-[19.3px] bottom-[2.5px] ${
-  //                     active == "contact" &&
-  //                     "border-r-[1px] border-r-gray-100 border-b-[1px] rounded-br-lg  rounded- w-[20px] h-[39px]"
-  //                   }`}
-  //                 ></span>
-  //                 <span
-  //                   className={`absolute -right-[23px] bottom-[2.5px] ${
-  //                     active == "contact" &&
-  //                     "border-l-[1px] border-l-gray-100 border-r-white rounded-b-lg w-6 h-[39px]"
-  //                   }`}
-  //                 ></span>
-  //                 Contact Us
-  //               </button>
-  //             </div>
-
-  // ***************
 
   <ul className="mb-4 mt-[72px] flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
     <Typography
@@ -329,7 +214,7 @@ const navList = (
                   : "font-medium"
               }`}
               onClick={() => {
-                  navigate("/contact");
+                navigate("/contact");
                 return handleClick("contact");
               }}
             >
@@ -354,14 +239,28 @@ const navList = (
             </button>
           </div>
         </div>
-        <Button
-          variant="danger"
-          size="sm"
-          className="hidden lg:inline-block text-white  items-center font-[600] leading-[34px]  bg-[#1E293B] hover:bg-[#334155] justify-center
+        {!user ? (
+          <Button
+            variant="danger"
+            size="sm"
+            className="hidden lg:inline-block text-white  items-center font-[600] leading-[34px]  bg-[#1E293B] hover:bg-[#334155] justify-center
      rounded-[8px]"
-        >
-          <span>Buy Nows</span>
-        </Button>
+            onClick={() => navigate("/")}
+          >
+            <span>Buy Nows</span>
+          </Button>
+        ) : (
+          <Button
+            variant="danger"
+            size="sm"
+            className="hidden lg:inline-block text-white  items-center font-[600] leading-[34px]  bg-[#1E293B] hover:bg-[#334155] justify-center
+     rounded-[8px]"
+            onClick={() => logOut()}
+          >
+            <span>Logout</span>
+          </Button>
+        )}
+
         <IconButton
           variant="text"
           className="ml-auto h-6 w-6 text-inherit hover:bg-transparent focus:bg-transparent active:bg-transparent lg:hidden"
