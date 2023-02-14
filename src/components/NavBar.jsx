@@ -2,8 +2,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { Button, IconButton, MobileNav, Navbar, Typography } from "@material-tailwind/react";
 import { useAuthState } from "react-firebase-hooks/auth";
-import auth, { logOut }  from "../auth";
+
 import { useDispatch, useSelector } from "react-redux";
+import { signOut } from "firebase/auth";
+import { auth } from "../auth";
+import { clearUser, setUser } from "../features/authSlice";
 
 
 const NavBar = () => {
@@ -72,6 +75,20 @@ const navList = (
     </Typography>
   </ul>
 );
+
+
+  const logOut = () => {
+    dispatch(clearUser())
+    signOut(auth)
+      .then(() => {
+        // Sign-out successful.
+        alert("Sign-out successful");
+      })
+      .catch((error) => {
+        // An error happened.
+        alert(error);
+      });
+  };
 
 
   return (
@@ -239,7 +256,7 @@ const navList = (
             </button>
           </div>
         </div>
-        {!user ? (
+        {  !user?.username  ? (
           <Button
             variant="danger"
             size="sm"
@@ -255,7 +272,7 @@ const navList = (
             size="sm"
             className="hidden lg:inline-block text-white  items-center font-[600] leading-[34px]  bg-[#1E293B] hover:bg-[#334155] justify-center
      rounded-[8px]"
-            onClick={() => logOut()}
+           onClick={logOut}
           >
             <span>Logout</span>
           </Button>
