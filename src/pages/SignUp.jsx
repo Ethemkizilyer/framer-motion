@@ -8,18 +8,17 @@ import db from "../auth";
 import { useDispatch } from "react-redux";
 import { setUser } from "../features/authSlice";
 
-
 function SignUp() {
   const [loading, setLoading] = useState(false);
   const [username, setusername] = useState("");
   const [email, setemail] = useState("");
   const [password, setpassword] = useState("");
-const dispatch =useDispatch()
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handlesubmit = (e) => {
     e.preventDefault();
-    dispatch(setUser({username}))
+    dispatch(setUser({ username }));
     setLoading(true);
     createUserWithEmailAndPassword(auth, email, password)
       .then((authUser) => {
@@ -46,37 +45,34 @@ const dispatch =useDispatch()
     return "Loading";
   } else {
     return (
-    
-        
-        <div className="signup__container">
-          <h1>Sign Up</h1>
-          <form onSubmit={handlesubmit}>
-            <input
-              required
-              type="text"
-              value={username}
-              onChange={(e) => setusername(e.target.value)}
-              placeholder="Username"
-            />
-            <input
-              required
-              type="email"
-              value={email}
-              onChange={(e) => setemail(e.target.value)}
-              placeholder="Email Id"
-            />
-            <input
-              required
-              type="password"
-              value={password}
-              onChange={(e) => setpassword(e.target.value)}
-              placeholder="Password"
-            />
-            <button type="submit">Sign Up</button>
-          </form>
-          <Link to="/login">&nbsp;Sign In</Link>
-        </div>
- 
+      <div className="signup__container">
+        <h1>Sign Up</h1>
+        <form onSubmit={handlesubmit}>
+          <input
+            required
+            type="text"
+            value={username}
+            onChange={(e) => setusername(e.target.value)}
+            placeholder="Username"
+          />
+          <input
+            required
+            type="email"
+            value={email}
+            onChange={(e) => setemail(e.target.value)}
+            placeholder="Email Id"
+          />
+          <input
+            required
+            type="password"
+            value={password}
+            onChange={(e) => setpassword(e.target.value)}
+            placeholder="Password"
+          />
+          <button type="submit">Sign Up</button>
+        </form>
+        <Link to="/login">&nbsp;Sign In</Link>
+      </div>
     );
   }
 }

@@ -1,6 +1,12 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { Button, IconButton, MobileNav, Navbar, Typography } from "@material-tailwind/react";
+import {
+  Button,
+  IconButton,
+  MobileNav,
+  Navbar,
+  Typography,
+} from "@material-tailwind/react";
 import { useAuthState } from "react-firebase-hooks/auth";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -8,77 +14,72 @@ import { signOut } from "firebase/auth";
 import { auth } from "../auth";
 import { clearUser, setUser } from "../features/authSlice";
 
-
 const NavBar = () => {
   const [active, setActive] = useState("home");
   const navigate = useNavigate();
-const user = useSelector((state)=>state.auth.user)
-console.log(user)
+  const user = useSelector((state) => state.auth.user);
+  console.log(user);
 
-    const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const handleClick = (page) => {
-  
     setActive(page);
   };
-    const [openNav, setOpenNav] = useState(false);
-  
-    useEffect(() => {
-      window.addEventListener(
-        "resize",
-        () => window.innerWidth >= 960 && setOpenNav(false)
-      );
-    }, []);
+  const [openNav, setOpenNav] = useState(false);
 
+  useEffect(() => {
+    window.addEventListener(
+      "resize",
+      () => window.innerWidth >= 960 && setOpenNav(false)
+    );
+  }, []);
 
-const navList = (
-
-  <ul className="mb-4 mt-[72px] flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
-    <Typography
-      as="li"
-      variant="small"
-      color="blue-gray"
-      className="p-1 font-normal"
-    >
-      <Link to="/" className="flex items-center">
-        Home
-      </Link>
-    </Typography>
-    <Typography
-      as="li"
-      variant="small"
-      color="blue-gray"
-      className="p-1 font-normal"
-    >
-      <Link to="/what-we-do" className="flex items-center">
-        What We Do
-      </Link>
-    </Typography>
-    <Typography
-      as="li"
-      variant="small"
-      color="blue-gray"
-      className="p-1 font-normal"
-    >
-      <Link to="/statistics" className="flex items-center">
-        GAMI Statistics
-      </Link>
-    </Typography>
-    <Typography
-      as="li"
-      variant="small"
-      color="blue-gray"
-      className="p-1 font-normal"
-    >
-      <Link to="/contact" className="flex items-center">
-        Contact Us
-      </Link>
-    </Typography>
-  </ul>
-);
-
+  const navList = (
+    <ul className="mb-4 mt-[72px] flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
+      <Typography
+        as="li"
+        variant="small"
+        color="blue-gray"
+        className="p-1 font-normal"
+      >
+        <Link to="/" className="flex items-center">
+          Home
+        </Link>
+      </Typography>
+      <Typography
+        as="li"
+        variant="small"
+        color="blue-gray"
+        className="p-1 font-normal"
+      >
+        <Link to="/what-we-do" className="flex items-center">
+          What We Do
+        </Link>
+      </Typography>
+      <Typography
+        as="li"
+        variant="small"
+        color="blue-gray"
+        className="p-1 font-normal"
+      >
+        <Link to="/statistics" className="flex items-center">
+          GAMI Statistics
+        </Link>
+      </Typography>
+      <Typography
+        as="li"
+        variant="small"
+        color="blue-gray"
+        className="p-1 font-normal"
+      >
+        <Link to="/contact" className="flex items-center">
+          Contact Us
+        </Link>
+      </Typography>
+    </ul>
+  );
 
   const logOut = () => {
-    dispatch(clearUser())
+    dispatch(clearUser());
     signOut(auth)
       .then(() => {
         // Sign-out successful.
@@ -89,7 +90,6 @@ const navList = (
         alert(error);
       });
   };
-
 
   return (
     <>
@@ -256,7 +256,7 @@ const navList = (
             </button>
           </div>
         </div>
-        {  !user?.username  ? (
+        {!user || !auth?.currentUser?.displayName ? (
           <Button
             variant="danger"
             size="sm"
@@ -272,7 +272,7 @@ const navList = (
             size="sm"
             className="hidden lg:inline-block text-white  items-center font-[600] leading-[34px]  bg-[#1E293B] hover:bg-[#334155] justify-center
      rounded-[8px]"
-           onClick={logOut}
+            onClick={logOut}
           >
             <span>Logout</span>
           </Button>
