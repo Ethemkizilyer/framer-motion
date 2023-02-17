@@ -176,7 +176,10 @@ const NavBar = () => {
                   ? "border-t-[1px] font-bold w-[130px] rounded-t-lg border-b-white text-[#263238]"
                   : "font-medium"
               }`}
-              onClick={() => handleClick("what")}
+              
+              onClick={() =>{ 
+                 navigate("/whatwedo");
+                return handleClick("what")}}
             >
               <span
                 className={`absolute -left-[7px] h-[1px] w-[142px] -right-1 bottom-[2.5px] ${
@@ -203,7 +206,9 @@ const NavBar = () => {
                   ? "border-t-[1px] font-bold w-[150px] rounded-t-lg border-b-white text-[#263238]"
                   : "font-medium"
               }`}
-              onClick={() => handleClick("GAMI")}
+              onClick={() => {
+                navigate("/statistics")
+                return handleClick("GAMI")}}
             >
               <span
                 className={`absolute -left-[12px] h-[1px] w-[167px] -right-1 bottom-[2.5px] ${
