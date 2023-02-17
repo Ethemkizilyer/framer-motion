@@ -8,6 +8,8 @@ import { ToastContainer } from "react-toastify";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import Home from "./pages/Home";
+import GAMI from "./pages/GAMI";
+import What from "./pages/What";
 const App = () => {
   return (
     <Provider store={store}>
@@ -18,6 +20,8 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/contact" element={<SignUp />} />
+          <Route path="/statistics" element={<GAMI />} />
+          <Route path="/whatwedo" element={<What />} />
         </Routes>
       </BrowserRouter>
     </Provider>
