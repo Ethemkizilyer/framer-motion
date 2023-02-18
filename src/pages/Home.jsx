@@ -30,7 +30,7 @@ function Home() {
     show: { opacity: 1, x: 0 },
   };
   return (
-    <div className="App">
+    <div>
       <motion.div
         style={{ scaleX: scaleX }}
         className="bg-gradient-to-r from-yellow-400 to-red-500 fixed top-0 left-0 right-0 h-[4px] origin-left -z-10"

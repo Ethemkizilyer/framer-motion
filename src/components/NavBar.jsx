@@ -92,7 +92,7 @@ const NavBar = () => {
   };
 
   return (
-    <>
+    <div>
       <div className="w-full px-8 mx-auto  flex items-center justify-between text-blue-gray-900  border-b h-[64px]   fixed">
         <Typography
           as="a"
@@ -335,7 +335,7 @@ const NavBar = () => {
           </Button>
         </div>
       </MobileNav>
-    </>
+    </div>
   );
 };
 
