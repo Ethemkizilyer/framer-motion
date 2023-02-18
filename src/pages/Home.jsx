@@ -46,14 +46,14 @@ function Home() {
           style={{ x: y, rotateZ: y, scale: 2 }}
           className="bg-red-500 w-[160px] h-[160px] left-[80px] top-[250px] flex -z-50 absolute items-center justify-center"
         >
-          {(user?.username && user?.username) || auth?.currentUser?.displayName}
+          {user?.username}
         </motion.div>
         <motion.div
           initial={{ opacity: 1 }}
           style={{ x: x, rotateZ: x, scale: 2 }}
           className="bg-yellow-500 w-[160px] h-[160px] right-[80px] top-[650px] flex -z-50 absolute items-center justify-center"
         >
-          {(user?.username && user?.username) || auth?.currentUser?.displayName}
+          {user?.username}
         </motion.div>
 
         <motion.div
@@ -62,7 +62,7 @@ function Home() {
           style={{ x: y, rotateZ: y, scale: 2 }}
           className="bg-red-500 w-[160px] h-[160px] left-[160px] top-[1050px] flex -z-50 absolute items-center justify-center"
         >
-          {(user?.username && user?.username) || auth?.currentUser?.displayName}
+          {user?.username }
         </motion.div>
 
         <motion.div variants={item} className="flex flex-col"></motion.div>

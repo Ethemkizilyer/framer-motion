@@ -176,10 +176,10 @@ const NavBar = () => {
                   ? "border-t-[1px] font-bold w-[130px] rounded-t-lg border-b-white text-[#263238]"
                   : "font-medium"
               }`}
-              
-              onClick={() =>{ 
-                 navigate("/whatwedo");
-                return handleClick("what")}}
+              onClick={() => {
+                navigate("/whatwedo");
+                return handleClick("what");
+              }}
             >
               <span
                 className={`absolute -left-[7px] h-[1px] w-[142px] -right-1 bottom-[2.5px] ${
@@ -207,8 +207,9 @@ const NavBar = () => {
                   : "font-medium"
               }`}
               onClick={() => {
-                navigate("/statistics")
-                return handleClick("GAMI")}}
+                navigate("/statistics");
+                return handleClick("GAMI");
+              }}
             >
               <span
                 className={`absolute -left-[12px] h-[1px] w-[167px] -right-1 bottom-[2.5px] ${
@@ -261,7 +262,7 @@ const NavBar = () => {
             </button>
           </div>
         </div>
-        {!user || !auth?.currentUser?.displayName ? (
+        {!user?.username ? (
           <Button
             variant="danger"
             size="sm"
@@ -324,15 +325,28 @@ const NavBar = () => {
       <MobileNav open={openNav}>
         <div className="container mx-auto">
           {navList}
-          <Button
-            variant="danger"
-            size="sm"
-            fullWidth
-            className="text-white flex items-center font-[600] leading-[34px] px-[28px] py-[14px]  bg-[#1E293B] hover:bg-[#334155] justify-center
+          {!user?.username ? (
+            <Button
+              variant="danger"
+              size="sm"
+              fullWidth
+              className="text-white flex items-center font-[600] leading-[34px] px-[28px] py-[14px]  bg-[#1E293B] hover:bg-[#334155] justify-center
      rounded-[8px]"
-          >
-            Buy GAMI
-          </Button>
+            >
+              Buy GAMI
+            </Button>
+          ) : (
+            <Button
+              variant="danger"
+              size="sm"
+              fullWidth
+              className="text-white flex items-center font-[600] leading-[34px] px-[28px] py-[14px]  bg-[#1E293B] hover:bg-[#334155] justify-center
+     rounded-[8px]"
+              onClick={logOut}
+            >
+              <span>Logout</span>
+            </Button>
+          )}
         </div>
       </MobileNav>
     </div>
