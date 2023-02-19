@@ -1,8 +1,7 @@
 import "../App.css";
 import { motion, useTransform, useScroll, useSpring } from "framer-motion";
 import { useSelector } from "react-redux";
-import { auth } from "../auth";
-
+import Tilty from "react-tilty";
 function Home() {
   const user = useSelector((state) => state.auth.user);
 
@@ -41,6 +40,15 @@ function Home() {
         initial="hidden"
         whileInView="show"
       >
+        <Tilty className="w-64 h-64 bg-orange-500 rounded-lg shadow-md overflow-hidden transform transition-transform duration-300 absolute top-[25vh] left-[40%] hover:-translate-y-2 z-[1]">
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
+            <h2 className="text-2xl font-bold mb-2">Welcome to my website</h2>
+            <p className="text-lg text-gray-700">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            </p>
+          </div>
+        </Tilty>
+        
         <motion.div
           initial={{ opacity: 1 }}
           style={{ x: y, rotateZ: y, scale: 2 }}
@@ -62,7 +70,7 @@ function Home() {
           style={{ x: y, rotateZ: y, scale: 2 }}
           className="bg-red-500 w-[160px] h-[160px] left-[160px] top-[1050px] flex -z-50 absolute items-center justify-center"
         >
-          {user?.username }
+          {user?.username}
         </motion.div>
 
         <motion.div variants={item} className="flex flex-col"></motion.div>
