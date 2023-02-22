@@ -86,10 +86,10 @@ function Home() {
             ))}
         </div>
         <button
-          disabled={say == 5}
+          disabled={say == data / 2 }
           onClick={() => handleSlide("right")}
           className={`${
-            say >= 5 && "hidden"
+            say >= data / 2  && "hidden"
           } absolute flex items-center justify-center right-1 text-[22px] bg-blue-300 px-[0.5rem]  rounded-[100%] `}
         >
           <span className="translate-x-[0.1rem]">▶</span>
