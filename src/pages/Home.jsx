@@ -2,13 +2,51 @@ import "../App.css";
 import { motion, useTransform, useScroll, useSpring } from "framer-motion";
 import { useSelector } from "react-redux";
 import Tilty from "react-tilty";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import axios from "axios";
+
 
 function Home() {
 
  const [say,setSay]=useState(1)
- const [data,setData]=useState(10)
+ const [bas,setBas]=useState(true)
   const user = useSelector((state) => state.auth.user);
+    const [earthquakeData, setEarthquakeData] = useState([]);
+
+     useEffect(() => {
+    // Sayfa yüklendiğinde ilk kez verileri çekeriz
+    fetchEarthquakeData();
+
+    // Her 5 dakikada bir verileri güncellemek için interval fonksiyonunu kullanırız
+    const intervalId = setInterval(fetchEarthquakeData, 1 * 60 * 1000);
+
+    // Component kaldırıldığında interval'ı temizlemek için kullanırız
+    return () => clearInterval(intervalId);
+  }, [bas]);
+
+  const fetchEarthquakeData = () => {
+    axios.get(`https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/${bas ? "all_hour": "all_day"}.geojson`)
+      .then(response => {
+        const europeEarthquakes = response.data.features.filter(
+          (earthquake) => {
+            console.log(earthquake.geometry.coordinates);
+            const [enlem, boylam] = earthquake.geometry.coordinates;
+            return (
+              boylam >= 35.1738 &&
+              boylam <= 71.3845 &&
+              enlem >= -26.3613 &&
+              enlem <= 45.8016
+            );
+          }
+        );
+
+        setEarthquakeData(bas ? response.data.features : europeEarthquakes);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
+
 
 
  const slideContainerRef = useRef(null);
@@ -53,6 +91,7 @@ function Home() {
     hidden: { opacity: 1, x: 10 },
     show: { opacity: 1, x: 0 },
   };
+
   return (
     <div>
       <motion.div
@@ -60,8 +99,8 @@ function Home() {
         className="bg-gradient-to-r from-yellow-400 to-red-500 fixed top-0 left-0 right-0 h-[4px] origin-left -z-10"
       />
 
-      <div className="relative left-[50%] translate-x-[-50%] p-8 w-[25vw] flex items-center justify-center mt-20 h-[25vh]    bg-green-500 rounded">
-        {" "}
+      <div className="relative left-[50%] translate-x-[-50%] px-8 py-12 w-[25vw] flex items-center justify-center mt-20 h-[26vh]    bg-green-500 rounded">
+        <h1 className="absolute whitespace-nowrap left-[50%] font-semibold -translate-x-[50%] top-0 cursor-pointer" onClick={()=>setBas(!bas)}>{bas ?  "Dünyadaki Saatlik Deprem Verileri" : "Avrupadaki Günlük Deprem Verileri"}</h1>{" "}
         <button
           disabled={say == 1}
           onClick={() => handleSlide("left")}
@@ -73,29 +112,32 @@ function Home() {
         </button>
         <div
           ref={slideContainerRef}
-          className="w-[260px] relative z-20 h-[20vh] bg-blue-gray-400 px-[10px] rounded flex  items-center justify-left  transition-width duration-1000 overflow-hidden"
+          className="w-[260px] relative z-20 h-[20vh] bg-blue-gray-400 px-[10px] rounded flex items-center justify-left  transition-width duration-1000 overflow-hidden"
         >
-          {Array(data)
-            .fill(1)
-            .map((_, index) => (
-              <Tilty>
-                <div className="min-w-[100px] flex  items-center justify-center mx-[10px] h-[100px] bg-orange-400">
-                  {index + 1}
-                </div>
-              </Tilty>
-            ))}
+          {earthquakeData.map((earthquake, index) => (
+            <Tilty key={index}>
+              <div className="min-w-[100px] flex flex-col  items-center justify-center mx-[10px] h-[100px] bg-orange-400">
+                <h3 className="font-bold text-[11px] text-center">
+                  {earthquake.properties.place}
+                </h3>
+                <p className=" text-[10px]">
+                  {earthquake.properties.mag} büyüklüğünde
+                </p>
+              </div>
+            </Tilty>
+          ))}
         </div>
         <button
-          disabled={say == data / 2 }
+          disabled={say == Math.ceil(earthquakeData.length / 2)}
           onClick={() => handleSlide("right")}
           className={`${
-            say >= data / 2  && "hidden"
+            say >= Math.ceil(earthquakeData.length / 2) && "hidden"
           } absolute flex items-center justify-center right-1 text-[22px] bg-blue-300 px-[0.5rem]  rounded-[100%] `}
         >
           <span className="translate-x-[0.1rem]">▶</span>
         </button>
         <div className="absolute  z-[1000000000000] flex  bottom-1 left-[50%]   -translate-x-[50%]">
-          {Array(data / 2)
+          {Array(Math.ceil(earthquakeData.length / 2))
             .fill(1)
             .map((_, index) => (
               <span
