@@ -6,7 +6,8 @@ import { useRef, useState } from "react";
 
 function Home() {
 
- const [say,setSay]=useState(0)
+ const [say,setSay]=useState(1)
+ const [data,setData]=useState(10)
   const user = useSelector((state) => state.auth.user);
 
 
@@ -58,92 +59,63 @@ function Home() {
         style={{ scaleX: scaleX }}
         className="bg-gradient-to-r from-yellow-400 to-red-500 fixed top-0 left-0 right-0 h-[4px] origin-left -z-10"
       />
-      <Tilty className="w-64 h-64 bg-orange-500 rounded-lg mt-20 shadow-md overflow-hidden transform transition-transform duration-300 absolute  left-[40%] hover:-translate-y-2 z-[1]">
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
-          <h2 className="text-2xl font-bold mb-2">Welcome to my website</h2>
-          <p className="text-lg text-gray-700">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-          </p>
-        </div>
-      </Tilty>
-      <div className="relative left-8 p-8 w-[350px] flex items-center justify-center h-[300px]   border-red-800 bg-green-500">
+
+      <div className="relative left-[50%] translate-x-[-50%] p-8 w-[25vw] flex items-center justify-center mt-20 h-[25vh]    bg-green-500 rounded">
         {" "}
         <button
-          disabled={say == 0}
+          disabled={say == 1}
           onClick={() => handleSlide("left")}
           className={`${
-            say == 0 && "hidden"
-          } absolute flex items-center justify-center left-2 text-[22px] bg-blue-800 p-1 rounded-[100%]`}
+            say == 1 && "hidden"
+          } absolute flex items-left text-center  justify-start left-1 text-[22px] bg-blue-300 px-[0.5rem] rounded-[100%]`}
         >
-          ◀
+          <span className="-translate-x-[0.1rem]">◀</span>
         </button>
         <div
           ref={slideContainerRef}
-          className="w-[240px] absolute z-20 h-[200px] bg-blue-gray-400 border flex  items-center justify-left overflow-hidden transition-width duration-1000"
+          className="w-[260px] relative z-20 h-[20vh] bg-blue-gray-400 px-[10px] rounded flex  items-center justify-left  transition-width duration-1000 overflow-hidden"
         >
-          <Tilty>
-            <div className="min-w-[100px] flex  items-center justify-center mx-[10px] h-[100px] bg-orange-400">
-              1
-            </div>
-          </Tilty>
-          <Tilty>
-            <div className="min-w-[100px] flex  items-center justify-center  mx-[10px] h-[100px] bg-orange-400">
-              2
-            </div>
-          </Tilty>
-          <Tilty>
-            <div className="min-w-[100px] flex  items-center justify-center  mx-[10px] h-[100px] bg-orange-400">
-              3
-            </div>
-          </Tilty>
-          <Tilty>
-            <div className="min-w-[100px] flex  items-center justify-center  mx-[10px] h-[100px] bg-orange-400">
-              4
-            </div>
-          </Tilty>
-          <Tilty>
-            <div className="min-w-[100px] flex  items-center justify-center  mx-[10px] h-[100px] bg-orange-400">
-              5
-            </div>
-          </Tilty>
-          <Tilty>
-            <div className="min-w-[100px] flex  items-center justify-center  mx-[10px] h-[100px] bg-orange-400">
-              6
-            </div>
-          </Tilty>
-          <Tilty>
-            {" "}
-            <div className="min-w-[100px] flex  items-center justify-center  mx-[10px] h-[100px] bg-orange-400">
-              7
-            </div>
-          </Tilty>
-          <Tilty>
-            {" "}
-            <div className="min-w-[100px] flex  items-center justify-center  mx-[10px] h-[100px] bg-orange-400">
-              8
-            </div>
-          </Tilty>
-          <Tilty>
-            {" "}
-            <div className="min-w-[100px] flex  items-center justify-center  mx-[10px] h-[100px] bg-orange-400">
-              9
-            </div>
-          </Tilty>
-          <Tilty>
-            <div className="min-w-[100px] flex  items-center justify-center  mx-[10px] h-[100px] bg-orange-400">
-              10
-            </div>
-          </Tilty>
+          {Array(data)
+            .fill(1)
+            .map((_, index) => (
+              <Tilty>
+                <div className="min-w-[100px] flex  items-center justify-center mx-[10px] h-[100px] bg-orange-400">
+                  {index + 1}
+                </div>
+              </Tilty>
+            ))}
         </div>
         <button
           disabled={say == 5}
           onClick={() => handleSlide("right")}
           className={`${
-            say >= 4 && "hidden"
-          } absolute flex items-center justify-center right-2 text-[22px] bg-blue-800 p-1 rounded-[100%] `}
+            say >= 5 && "hidden"
+          } absolute flex items-center justify-center right-1 text-[22px] bg-blue-300 px-[0.5rem]  rounded-[100%] `}
         >
-          ▶
+          <span className="translate-x-[0.1rem]">▶</span>
         </button>
+        <div className="absolute  z-[1000000000000] flex  bottom-1 left-[50%]   -translate-x-[50%]">
+          {Array(data / 2)
+            .fill(1)
+            .map((_, index) => (
+              <span
+                key={index}
+                className={`w-[10px]  h-[10px] rounded-[50%] bottom-[0px]  border`}
+              ></span>
+            ))}
+          <div className="absolute h-[10px] bottom-[10px] rounded-[50%] w-[50px]">
+            {Array(say)
+              .fill(1)
+              .map((_, index) => (
+                <span
+                  key={index}
+                  className={`  rounded-[100%] bg-black text-[7px] px-[2.6px] py-[0.1px]`}
+                >
+                  +
+                </span>
+              ))}
+          </div>
+        </div>
       </div>
 
       <motion.div
