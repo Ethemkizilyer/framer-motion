@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
 import styled from "styled-components";
-
+import { useAnimation } from "framer-motion";
 export const Header = styled.header`
   background: green;
   position: relative;
@@ -68,6 +68,31 @@ const GAMI = () => {
       y: 0,
     },
   };
+
+
+
+
+  const [arr, setArr] = useState(
+    ["Item 1", "Item 2", "Item 3", "Item 4", "Item 5"].map((item, i) => ({
+      name: item,
+      id: i,
+    }))
+  );
+
+  const animation = useAnimation();
+
+  const list = {
+    hidden: { opacity: 1 },
+    visible: {
+      transition: {
+        staggerChildren: "infinite",
+      },
+    },
+  };
+  const item = {
+    hidden: { x: -60, opacity: 0 },
+    visible: { x: 0, opacity: 1 },
+  };
   return (
     <div className="mt-20 w-100 h-[90vh] border bg-orange-100 relative overflow-hidden">
       <Header>
@@ -101,6 +126,71 @@ const GAMI = () => {
         <Link variants={linkVariants}>about</Link>
         <Link variants={linkVariants}>gallery</Link>
       </Nav>
+
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignContent:" center",
+          alignItems: "center",
+          height:"100vh",
+          backgroundColor:" #bfacf7",
+        }}
+      >
+        <motion.div
+          className={css`
+            width: 320px;
+            height: 100px;
+            border: 3px solid #6a6aff;
+            border-radius: 15px;
+            background-color: #cfbfff;
+            overflow: hidden;
+          `}
+          initial={"hidden"}
+          animate={"visible"}
+          variants={list}
+        >
+          {arr.map(({ name, id }, i) => {
+            return (
+              <motion.p
+                key={id}
+                className={css`
+                  padding: 5px 20px;
+                  font-size: 23px;
+                  display: inline-block;
+                  justify-content: space-between;
+                  text-align: center;
+                  font-family: "Lato";
+                  color: #fff;
+                  cursor: pointer;
+                `}
+                custom={i}
+                animate={animation}
+                variants={item}
+                onTap={async (e, info) => {
+                  await animation.start((j) => {
+                    if (i === j) {
+                      console.log("here");
+                      return {
+                        opacity: 0,
+                        x: -100,
+                        transition: { delay: i * 0.3 },
+                      };
+                    } else {
+                      return {
+                        opacity: 1,
+                      };
+                    }
+                  });
+                  setArr(arr.filter((item) => item.id !== id));
+                }}
+              >
+                <span>{name}</span>
+              </motion.p>
+            );
+          })}
+        </motion.div>
+      </div>
     </div>
   );
 }

@@ -29,7 +29,7 @@ function Home() {
       .then(response => {
         const europeEarthquakes = response.data.features.filter(
           (earthquake) => {
-            console.log(earthquake.geometry.coordinates);
+            // console.log(earthquake.geometry.coordinates);
             const [enlem, boylam] = earthquake.geometry.coordinates;
             return (
               boylam >= 35.1738 &&
@@ -78,17 +78,18 @@ function Home() {
   let x = useSpring(useTransform(scrollYProgress, [0, 1], [0, -100 * 16]));
 
   let container = {
-    hidden: { opacity: 1 },
+    hidden: { opacity: 0 },
     show: {
       opacity: 1,
       transition: {
         staggerChildren: 0.25,
+        duration: 0.25,
       },
     },
   };
 
   const item = {
-    hidden: { opacity: 1, x: 10 },
+    hidden: { opacity: 0, x: 10 },
     show: { opacity: 1, x: 0 },
   };
 
