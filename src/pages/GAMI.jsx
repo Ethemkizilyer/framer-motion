@@ -1,7 +1,47 @@
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import styled from "styled-components";
 import { useAnimation } from "framer-motion";
+
+
+const ca = [
+  {
+    id: 1,
+    title: "Card 1",
+    content: "Content of Card 1",
+  },
+  {
+    id: 2,
+    title: "Card 2",
+    content: "Content of Card 2",
+  },
+  {
+    id: 3,
+    title: "Card 3",
+    content: "Content of Card 3",
+  },
+  {
+    id: 4,
+    title: "Card 4",
+    content: "Content of Card 3",
+  },
+  {
+    id: 5,
+    title: "Card 5",
+    content: "Content of Card 3",
+  },
+  {
+    id: 6,
+    title: "Card 6",
+    content: "Content of Card 3",
+  },
+  {
+    id: 7,
+    title: "Card 7",
+    content: "Content of Card 3",
+  },
+];
+
 export const Header = styled.header`
   background: green;
   position: relative;
@@ -33,7 +73,6 @@ export const Link = styled(motion.li)`
 export const SvgBox = styled(motion.div)``;
 
 const GAMI = () => {
-
   const [isOpen, setIsOpen] = useState(false);
 
   const iconVariants = {
@@ -69,15 +108,7 @@ const GAMI = () => {
     },
   };
 
-
-
-
-  const [arr, setArr] = useState(
-    ["Item 1", "Item 2", "Item 3", "Item 4", "Item 5"].map((item, i) => ({
-      name: item,
-      id: i,
-    }))
-  );
+  const [arr, setArr] = useState(ca);
 
   const animation = useAnimation();
 
@@ -90,9 +121,32 @@ const GAMI = () => {
     },
   };
   const item = {
-    hidden: { x: -60, opacity: 0 },
-    visible: { x: 0, opacity: 1 },
+    visible: {
+      x: 0,
+      opacity: 1,
+    },
+    hidden: {
+      x: "-500px",
+      opacity: 0,
+      height: "50px",
+      width: "50px",
+      y: "500px",
+    },
   };
+
+  const handleClick = (id) => {
+    const selectedCardIndex = arr.findIndex((item) => item.id === id);
+    const selectedCard = arr[selectedCardIndex];
+
+    const newList = [
+      ...arr.slice(0, selectedCardIndex),
+      ...arr.slice(selectedCardIndex + 1),
+      selectedCard,
+    ];
+
+    setArr(newList);
+  };
+
   return (
     <div className="mt-20 w-100 h-[90vh] border bg-orange-100 relative overflow-hidden">
       <Header>
@@ -131,68 +185,149 @@ const GAMI = () => {
         style={{
           display: "flex",
           justifyContent: "center",
-          alignContent:" center",
+          alignContent: " center",
           alignItems: "center",
-          height:"100vh",
-          backgroundColor:" #bfacf7",
+          height: "100vh",
+          backgroundColor: " #bfacf7",
         }}
       >
-        <motion.div
-          className={css`
-            width: 320px;
-            height: 100px;
-            border: 3px solid #6a6aff;
-            border-radius: 15px;
-            background-color: #cfbfff;
-            overflow: hidden;
-          `}
-          initial={"hidden"}
-          animate={"visible"}
-          variants={list}
+        <div
+          style={{
+            border: "3px solid #6a6aff",
+            borderRadius: "15px",
+            backgroundColor: "#cfbfff",
+          }}
+          className="card-list w-[670px] bg-slate-500 overflow-hidden border"
         >
-          {arr.map(({ name, id }, i) => {
-            return (
-              <motion.p
-                key={id}
-                className={css`
-                  padding: 5px 20px;
-                  font-size: 23px;
-                  display: inline-block;
-                  justify-content: space-between;
-                  text-align: center;
-                  font-family: "Lato";
-                  color: #fff;
-                  cursor: pointer;
-                `}
-                custom={i}
-                animate={animation}
-                variants={item}
-                onTap={async (e, info) => {
-                  await animation.start((j) => {
-                    if (i === j) {
-                      console.log("here");
-                      return {
-                        opacity: 0,
-                        x: -100,
-                        transition: { delay: i * 0.3 },
-                      };
-                    } else {
-                      return {
-                        opacity: 1,
-                      };
-                    }
-                  });
-                  setArr(arr.filter((item) => item.id !== id));
-                }}
-              >
-                <span>{name}</span>
-              </motion.p>
-            );
-          })}
-        </motion.div>
+          <AnimatePresence
+            style={{
+              background: "red",
+              width: "300px",
+              display: "inline-block",
+              marginRight: "10px",
+            }}
+          >
+            <motion.div
+              style={{
+                width: "1560px",
+                height: "500px",
+
+                overflow: "hidden",
+                gap: "1rem",
+                display: "flex",
+                padding: "0 1rem",
+                alignItems: "center",
+                position: "relative",
+              }}
+              initial={"hidden"}
+              animate={"visible"}
+              variants={list}
+            >
+              {arr.map(({ title, id }, i) => {
+                return (
+                  <motion.div
+                    key={id}
+                    style={{
+                      padding: "5px 20px",
+                      fontSize: "23px",
+                      display: "inline-block",
+                      justifyContent: "space-between",
+                      textAlign: "center",
+                      fontFamily: "Lato",
+                      color: "#fff",
+                      cursor: "pointer",
+                      width: "200px",
+                      height: "400px",
+                      backgroundColor: "red",
+                    }}
+                    custom={i}
+                    transition={{ duration: 0.5 }}
+                    animate={animation}
+                    variants={item}
+                    className="card"
+                    layout
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+
+                    // onTap={async (e, info) => {
+                    //   await animation.start((j) => {
+                    //     if (i === j) {
+                    //       console.log("here");
+                    //       return {
+                    //         opacity: 0,
+                    //         x: -600,
+                    //         transition: { delay: i * 0.1, duration: 1 },
+                    //       };
+                    //     } else {
+                    //       return {
+                    //         opacity: 1,
+                    //       };
+                    //     }
+                    //   });
+                    //   setArr(arr.filter((item) => item.id !== id));
+                    // }}
+                  >
+                    <span>{title}</span>
+                    <div className="mt-[300px] ml-7 flex gap-4">
+                      <button
+                        onClick={async () => {
+                          await animation.start((j) => {
+                            if (i === j) {
+                              console.log("here");
+                              return {
+                                opacity: 0,
+                                x: -600,
+                                transition: { delay: i * 0.1, duration: 0.5 },
+                                height: "50px",
+                                width: "50px",
+                              };
+                            } else {
+                              return {
+                                opacity: 1,
+                              };
+                            }
+                          });
+                          setArr(arr.filter((item) => item.id !== id));
+                        }}
+                      >
+                        ❤
+                      </button>
+                      <button
+                        onClick={async () => {
+                          await animation.start((j) => {
+                            if (i === j) {
+                              console.log("here");
+                              return {
+                                opacity: 0,
+                                y: 300,
+                                transition: { delay: i * 0.1, duration: 0.5 },
+                                height: "10px",
+                                width: "200px",
+                                textAlign: "center",
+                                alignItems: "center",
+                              };
+                            } else {
+                              return {
+                                opacity: 1,
+                              };
+                            }
+                          });
+                          setArr(arr.filter((item) => item.id !== id));
+                        }}
+                      >
+                        ❌
+                      </button>
+                      <button onClick={() => handleClick(id)}>↪</button>
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </motion.div>
+          </AnimatePresence>
+        </div>
       </div>
     </div>
   );
-}
+};
 
-export default GAMI
+export default GAMI;
