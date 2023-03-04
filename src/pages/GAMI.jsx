@@ -1,8 +1,83 @@
-import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
+import { motion, AnimatePresence, animate } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { useAnimation } from "framer-motion";
+import { CircularProgressbar } from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css";
+import { Text } from "@chakra-ui/core";
 
+
+
+const Progress = ({ strokeWidth, percentage }) => {
+  const radius = 50 - strokeWidth / 2;
+  const pathDescription = `
+      M 50,50 m 0,-${radius}
+      a ${radius},${radius} 0 1 1 0,${2 * radius}
+      a ${radius},${radius} 0 1 1 0,-${2 * radius}
+    `;
+
+  const diameter = Math.PI * 2 * radius;
+  const progressStyle = {
+    stroke: "url(#myGradient)",
+    strokeLinecap: "round",
+    strokeDasharray: `${diameter}px ${diameter}px`,
+    strokeDashoffset: `${((100 - percentage) / 100) * diameter}px`,
+    animate:"1000"
+  };
+
+  return (
+    <svg
+      className={"CircularProgressbar"}
+      fill="url(#myGradient)"
+      viewBox="0 0 100 100"
+      width="50"
+      height="50"
+
+    >
+
+      <defs>
+        <linearGradient id="myGradient" gradientTransform="rotate(90)">
+          <stop offset="0%" stop-color="#f4756c" />
+          <stop offset="100%" stop-color="#ffc371" />
+        </linearGradient>
+      </defs>
+      <path
+        className="CircularProgressbar-trail"
+        d={pathDescription}
+        strokeWidth={strokeWidth}
+        fillOpacity={0}
+        style={{
+          stroke: "#d6d6d6",
+        }}
+      />
+
+      <path
+        className="CircularProgressbar-path"
+        d={pathDescription}
+        strokeWidth={strokeWidth}
+        fillOpacity={0}
+        style={progressStyle}
+        
+      />
+
+      <text
+        className="CircularProgressbar-text"
+        x={50}
+        y={50}
+        style={{
+          fill: "url(#myGradient)",
+          fontSize: "32px",
+          fontWeight: "bolder",
+          dominantBaseline: "central",
+          textAnchor: "middle",
+          // fill: "red", // Metnin iç rengini kırmızı yapmak için "fill" özelliğini kullanıyoruz.
+        }}
+      >
+        {`${percentage}%`}
+      </text>
+    </svg>
+  );
+};
 
 const ca = [
   {
@@ -147,6 +222,37 @@ const GAMI = () => {
     setArr(newList);
   };
 
+ const [percentage, setPercentage] = useState(0);
+
+ useEffect(() => {
+   setTimeout(() => {
+     if (percentage < 90) {
+       setPercentage(percentage + 1);
+     }
+   }, 50);
+ }, [percentage]);
+
+const [say, setSay] = useState(1);
+ const slideContainerRef = useRef(null);
+
+  const handleSlide = (direction) => {
+    const slideContainer = slideContainerRef.current;
+
+    if (direction === "left") {
+      setSay(say - 1);
+      slideContainer.scrollBy({
+        left: "-100%",
+        behavior: "smooth",
+      });
+    } else {
+      setSay(say + 1);
+      slideContainer.scrollBy({
+        left: "100%",
+        behavior: "smooth",
+      });
+    }
+  };
+
   return (
     <div className="mt-20 w-100 h-[90vh] border bg-orange-100 relative overflow-hidden">
       <Header>
@@ -181,23 +287,47 @@ const GAMI = () => {
         <Link variants={linkVariants}>gallery</Link>
       </Nav>
 
+      <motion.div
+        animate={{ scale: [0.8, 1.1, 0.8] }}
+        transition={{ duration: 1, repeat: Infinity }}
+        style={{ display: "inline-block" }}
+      >
+        <Progress strokeWidth={12} percentage={75} />
+      </motion.div>
+
       <div
         style={{
           display: "flex",
           justifyContent: "center",
           alignContent: " center",
           alignItems: "center",
-          height: "100vh",
+          height: "80vh",
           backgroundColor: " #bfacf7",
+          position: "relative",
         }}
       >
+        {" "}
+        <button
+          disabled={say == 1}
+          onClick={() => handleSlide("left")}
+          className="absolute left-8 top-[50%]"
+        >
+          ◀
+        </button>
+        <button
+          onClick={() => handleSlide("right")}
+          className="absolute top-[50%] right-8"
+        >
+          ▶
+        </button>
         <div
+          ref={slideContainerRef}
           style={{
             border: "3px solid #6a6aff",
             borderRadius: "15px",
             backgroundColor: "#cfbfff",
           }}
-          className="card-list w-[670px] bg-slate-500 overflow-hidden border"
+          className="card-list w-[700px] bg-slate-500 overflow-hidden border "
         >
           <AnimatePresence
             style={{
@@ -278,8 +408,6 @@ const GAMI = () => {
                                 opacity: 0,
                                 x: -600,
                                 transition: { delay: i * 0.1, duration: 0.5 },
-                                height: "50px",
-                                width: "50px",
                               };
                             } else {
                               return {
