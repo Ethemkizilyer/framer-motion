@@ -3,18 +3,18 @@ import React, { useState } from 'react'
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
-// const Container = styled.div`
-//   background-color: red;
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-//   padding: 16px;
-//   box-sizing: border-box;
-//   border-radius: 8px;
-//   box-shadow: 0 16px 32px -16px black;
-//   width: 100%;
-//   height: 90%;
-// `;
+const Container = styled.div`
+  background-color: red;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 16px;
+  box-sizing: border-box;
+  border-radius: 8px;
+  box-shadow: 0 16px 32px -16px black;
+  width: 100%;
+  height: 90%;
+`;
 
 const MotionBox = styled(motion.div)`
  
